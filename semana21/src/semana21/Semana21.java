@@ -33,44 +33,12 @@ public Semana21() {
     BranchGroup group = new BranchGroup();
 
     // create a color cube
-
-    Vector3f vector = new Vector3f(-0.3f, 0.0f, 0.0f);
-
-    Transform3D transform = new Transform3D();
-
-    transform.setTranslation(vector);
-
-    TransformGroup transformGroup = new TransformGroup(transform);
-
-    ColorCube cube = new ColorCube(0.3);
-
-    transformGroup.addChild(cube);
-
-    group.addChild(transformGroup);
+    
+    createCube(group);
 
     //create a sphere
 
-    Vector3f vector2 = new Vector3f(+0.3f, 0.0f, 0.0f);
-
-    Transform3D transform2 = new Transform3D();
-
-    transform2.setTranslation(vector2);
-
-    TransformGroup transformGroup2 = new TransformGroup(transform2);
-
-    Appearance appearance = new Appearance();
-
-    appearance.setPolygonAttributes(
-
-       new PolygonAttributes(PolygonAttributes.POLYGON_LINE,
-
-       PolygonAttributes.CULL_BACK,0.0f));
-
-    Sphere sphere = new Sphere(0.3f,appearance);
-
-    transformGroup2.addChild(sphere);
-
-    group.addChild(transformGroup2);
+    createSphere(group);
 
     universe.getViewingPlatform().setNominalViewingTransform();
 
@@ -139,4 +107,44 @@ public void mouseClicked(MouseEvent e)  {
        }
     }
 }
+
+    private void createCube(BranchGroup group) {
+        Vector3f vector = new Vector3f(-0.3f, 0.0f, 0.0f);
+
+        Transform3D transform = new Transform3D();
+
+        transform.setTranslation(vector);
+
+        TransformGroup transformGroup = new TransformGroup(transform);
+
+        ColorCube cube = new ColorCube(0.3);
+
+        transformGroup.addChild(cube);
+
+        group.addChild(transformGroup);
+    }
+
+    private void createSphere(BranchGroup group) {
+        Vector3f vector2 = new Vector3f(+0.3f, 0.0f, 0.0f);
+
+        Transform3D transform2 = new Transform3D();
+
+        transform2.setTranslation(vector2);
+
+        TransformGroup transformGroup2 = new TransformGroup(transform2);
+
+        Appearance appearance = new Appearance();
+
+        appearance.setPolygonAttributes(
+
+           new PolygonAttributes(PolygonAttributes.POLYGON_LINE,
+
+           PolygonAttributes.CULL_BACK,0.0f));
+
+        Sphere sphere = new Sphere(0.3f,appearance);
+
+        transformGroup2.addChild(sphere);
+
+        group.addChild(transformGroup2);
+    }
 }
