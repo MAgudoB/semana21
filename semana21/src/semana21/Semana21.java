@@ -6,6 +6,9 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
 
 import com.sun.j3d.utils.geometry.*;
 
+import com.sun.j3d.loaders.*;
+import com.sun.j3d.loaders.objectfile.ObjectFile;
+
 import javax.media.j3d.*;
 
 import javax.vecmath.*;
@@ -13,6 +16,7 @@ import javax.vecmath.*;
 import java.awt.event.*;
 
 import java.awt.*;
+import java.io.File;
 
 public class Semana21 extends MouseAdapter {
 
@@ -20,13 +24,13 @@ private PickCanvas pickCanvas;
 
 public Semana21() {
 
-    Frame frame = new Frame("Box and Sphere");
+    Frame frame = new Frame("Jurasic World");
 
     GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
 
     Canvas3D canvas = new Canvas3D(config);
 
-    canvas.setSize(400, 400);
+    canvas.setSize(800, 800);
 
     SimpleUniverse universe = new SimpleUniverse(canvas);
 
@@ -34,11 +38,15 @@ public Semana21() {
 
     // create a color cube
     
-    createCube(group);
+    //createCube(group);
 
     //create a sphere
 
-    createSphere(group);
+    //createSphere(group);
+    
+    group.addChild(createRaptor());
+    
+    group.addChild(createLawMan());
 
     universe.getViewingPlatform().setNominalViewingTransform();
 
@@ -73,6 +81,8 @@ public static void main( String[] args ) {
     System.setProperty("sun.awt.noerasebackground", "true");
 
     new Semana21();
+    
+    
 
 }
 
@@ -147,4 +157,83 @@ public void mouseClicked(MouseEvent e)  {
 
         group.addChild(transformGroup2);
     }
+
+    private BranchGroup createRaptor() {
+        
+        BranchGroup objRoot = new BranchGroup();
+        TransformGroup tg = new TransformGroup();
+        Transform3D t3d = new Transform3D();
+
+        tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+
+        t3d.setTranslation(new Vector3f(-0.3f, 0.0f, 0.0f));
+        t3d.setRotation(new AxisAngle4f(0.0f, 0.0f, 0.0f, 0.0f));
+        t3d.setScale(1.0);
+
+        tg.setTransform(t3d);
+
+        ObjectFile loader = new ObjectFile(ObjectFile.RESIZE);
+        Scene s = null;
+
+        File file = new java.io.File("src//semana21//Irex_obj.obj");
+
+        try {
+         s = loader.load(file.toURI().toURL());
+        } catch (Exception e) {
+         System.err.println(e);
+         System.exit(1);
+        }
+
+        tg.addChild(s.getSceneGroup());
+
+        objRoot.addChild(tg);
+        objRoot.addChild(createLight());
+        objRoot.compile();
+
+        return objRoot;
+    }
+    
+    private BranchGroup createLawMan() {
+        
+        BranchGroup objRoot = new BranchGroup();
+        TransformGroup tg = new TransformGroup();
+        Transform3D t3d = new Transform3D();
+
+        tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+
+        t3d.setTranslation(new Vector3f(+0.3f, 0.0f, 0.0f));
+        t3d.setRotation(new AxisAngle4f(0.0f, 0.0f, 0.0f, 0.0f));
+        t3d.setScale(1.0);
+
+        tg.setTransform(t3d);
+
+        ObjectFile loader = new ObjectFile(ObjectFile.RESIZE);
+        Scene s = null;
+
+        File file = new java.io.File("src//semana21//lawMan.obj");
+
+        try {
+         s = loader.load(file.toURI().toURL());
+        } catch (Exception e) {
+         System.err.println(e);
+         System.exit(1);
+        }
+
+        tg.addChild(s.getSceneGroup());
+
+        objRoot.addChild(tg);
+        objRoot.addChild(createLight());
+        objRoot.compile();
+
+        return objRoot;
+    }
+    
+    private Light createLight() {
+      DirectionalLight light = new DirectionalLight(true, new Color3f(1.0f,
+        1.0f, 1.0f), new Vector3f(-0.3f, 0.2f, -1.0f));
+
+      light.setInfluencingBounds(new BoundingSphere(new Point3d(), 10000.0));
+
+      return light;
+     }
 }
