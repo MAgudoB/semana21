@@ -1,5 +1,6 @@
 package semana21;
 
+import Characters.Raptor;
 import com.sun.j3d.utils.picking.*;
 
 import com.sun.j3d.utils.universe.SimpleUniverse;
@@ -18,13 +19,22 @@ import java.awt.event.*;
 import java.awt.*;
 import java.io.File;
 
-public class Semana21 extends MouseAdapter {
+import javax.swing.Timer;
+
+public class Semana21 extends MouseAdapter implements ActionListener, KeyListener {
 
 private PickCanvas pickCanvas;
+private Timer timer;
+private boolean turnRight,turnLeft,goFront,goBack;
+private Raptor raptor;
+
 
 public Semana21() {
 
     Frame frame = new Frame("Jurasic World");
+    
+    timer = new Timer(100,this);
+      
 
     GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
 
@@ -34,17 +44,11 @@ public Semana21() {
 
     SimpleUniverse universe = new SimpleUniverse(canvas);
 
-    BranchGroup group = new BranchGroup();
-
-    // create a color cube
+    BranchGroup group = new BranchGroup();    
     
-    //createCube(group);
-
-    //create a sphere
-
-    //createSphere(group);
+    raptor = createRaptor();
     
-    group.addChild(createRaptor());
+    group.addChild(raptor);
     
     group.addChild(createLawMan());
 
@@ -69,10 +73,14 @@ public Semana21() {
     pickCanvas.setMode(PickCanvas.BOUNDS);
 
     canvas.addMouseListener(this);
+    
+    canvas.addKeyListener(this);
 
     frame.pack();
 
     frame.show();
+    
+    timer.start();
 
 }
 
@@ -80,7 +88,7 @@ public static void main( String[] args ) {
 
     System.setProperty("sun.awt.noerasebackground", "true");
 
-    new Semana21();
+    Semana21 game = new Semana21();
     
     
 
@@ -158,9 +166,9 @@ public void mouseClicked(MouseEvent e)  {
         group.addChild(transformGroup2);
     }
 
-    private BranchGroup createRaptor() {
+    private Raptor createRaptor() {
         
-        BranchGroup objRoot = new BranchGroup();
+        Raptor objRoot = new Raptor();
         TransformGroup tg = new TransformGroup();
         Transform3D t3d = new Transform3D();
 
@@ -189,7 +197,6 @@ public void mouseClicked(MouseEvent e)  {
         objRoot.addChild(tg);
         objRoot.addChild(createLight());
         objRoot.compile();
-
         return objRoot;
     }
     
@@ -236,4 +243,51 @@ public void mouseClicked(MouseEvent e)  {
 
       return light;
      }
+
+    //Bucle
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+        raptor.move(turnLeft,turnRight,goFront,goBack);
+    }
+
+    @Override
+    public void keyTyped(KeyEvent ke) {
+        System.out.println("Key Typed: "+ke.getKeyCode());
+    }
+    //Pulsar una tecla
+    @Override
+    public void keyPressed(KeyEvent ke) {
+        if(ke.getKeyChar()=='a'){
+            turnLeft = true;
+            turnRight = false;
+        }
+        if(ke.getKeyChar()=='w'){
+            goFront = true;
+            goBack = false;
+        }
+        if(ke.getKeyChar()=='s'){
+            goBack = true;
+            goFront = false;
+        }
+        if(ke.getKeyChar()=='d'){
+            turnRight = true;
+            turnLeft = false;
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent ke) {
+        if(ke.getKeyChar()=='a'){
+            turnLeft = false;
+        }
+        if(ke.getKeyChar()=='w'){
+            goFront = false;
+        }
+        if(ke.getKeyChar()=='s'){
+            goBack = true;
+        }
+        if(ke.getKeyChar()=='d'){
+            turnRight = false;
+        }
+    }
 }
