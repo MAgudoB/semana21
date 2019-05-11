@@ -206,7 +206,6 @@ public class Semana21 extends MouseAdapter implements ActionListener, KeyListene
 
     @Override
     public void keyTyped(KeyEvent ke) {
-        System.out.println("Key Typed: " + ke.getKeyCode());
     }
 
     //Pulsar una tecla

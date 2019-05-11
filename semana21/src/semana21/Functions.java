@@ -15,7 +15,6 @@ public class Functions {
 
     //Get distance
     private static double getDistance(Vector3d vector1, Vector3d vector2) {
-
         double d = Math.pow((Math.pow(vector2.x - vector1.x, 2)
                 + Math.pow(vector2.y - vector1.y, 2)
                 + Math.pow(vector2.z - vector1.z, 2)
@@ -27,6 +26,11 @@ public class Functions {
         boolean capture = false;
         Vector3d raptorVector = getVector(raptor);
         Vector3d lawManVector = getVector(lawMan);
+        if(getDistance(raptorVector, lawManVector) <= 5){
+            lawMan.setRunning(true,raptorVector);
+        } else{
+            lawMan.setRunning(false, raptorVector);
+        }
         if (getDistance(raptorVector, lawManVector) <= 1) {
             capture = true;
         }

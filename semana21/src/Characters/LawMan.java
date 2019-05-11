@@ -17,6 +17,8 @@ public class LawMan extends BranchGroup implements CharacterMovement {
     private double angleY = Math.toRadians(15);
     private double speed = 0.1;
     private Matrix4d matrix = new Matrix4d();
+    private boolean running;
+    private Vector3d runningFrom;
 
     private void getRandomMove() {
         Random rnd = new Random();
@@ -40,10 +42,31 @@ public class LawMan extends BranchGroup implements CharacterMovement {
                 break;
         }
     }
+    
+    private void runAway(){
+        turnRight = false;
+        turnLeft = false;
+        goFront = false;
+        goBack = false;
+        TransformGroup tg = (TransformGroup) this.getChild(0);
+        Transform3D t3d = new Transform3D();
+        Vector3d currentPos = new Vector3d();
+        tg.getTransform(t3d);
+        t3d.get(currentPos);
+        if(currentPos.x>runningFrom.x || currentPos.z>runningFrom.z){
+            goFront = true;
+        }
+        if(currentPos.x<runningFrom.x || currentPos.z<runningFrom.z){
+            goBack = true;
+        }
+    }
 
     @Override
     public void move() {
-        getRandomMove();
+        if(!running)getRandomMove();
+        else{
+            runAway();
+        }
         TransformGroup tg = (TransformGroup) this.getChild(0);
         Transform3D t3d = new Transform3D();
         Transform3D t3dStep = new Transform3D();
@@ -76,5 +99,10 @@ public class LawMan extends BranchGroup implements CharacterMovement {
             t3d.mul(t3dStep);
             tg.setTransform(t3d);
         }
+    }
+
+    public void setRunning(boolean b, Vector3d raptorVector) {
+        this.running = b;
+        this.runningFrom = raptorVector;
     }
 }
