@@ -20,8 +20,9 @@ import javax.vecmath.Vector3f;
  * @author Miguel
  */
 public class Raptor extends BranchGroup implements CharacterMovement {
-    private double x,y,z;
+	private boolean turnRight,turnLeft,goFront,goBack;
     private double angleY = Math.toRadians(15);
+    private double speed = 0.1;
     private Matrix4d matrix = new Matrix4d();
     
     public Raptor(){
@@ -29,32 +30,54 @@ public class Raptor extends BranchGroup implements CharacterMovement {
     }
 
     @Override
-    public void move(boolean turnLeft,boolean turnRight,boolean goFront,boolean goBack) {
+    public void move() {
         TransformGroup tg = (TransformGroup) this.getChild(0);
         Transform3D t3d = new Transform3D();
-        Transform3D t3dAux = new Transform3D();
+        Transform3D t3dStep = new Transform3D();
         tg.getTransform(t3d);
-        Vector3f translation = new Vector3f();
-        t3d.get(translation);
-        if(turnLeft){
-            
+        if(this.turnLeft){
+        	t3dStep.rotY(angleY);
+        	tg.getTransform(t3d);
+        	t3d.get(matrix);
+			t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
+			t3d.mul(t3dStep);
+			t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
+			tg.setTransform(t3d);
+        } else if(this.turnRight){
+        	t3dStep.rotY(-angleY);
+        	tg.getTransform(t3d);
+        	t3d.get(matrix);
+        	t3d.setTranslation(new Vector3d(0.0, 0.0, 0.0));
+			t3d.mul(t3dStep);
+			t3d.setTranslation(new Vector3d(matrix.m03, matrix.m13, matrix.m23));
+			tg.setTransform(t3d);
         }
-        if(turnRight){
-            t3dAux.set(new Vector3d(0d,-angleY,0d));
-            t3d.mul(t3dAux);
-            tg.setTransform(t3d);
+        if(this.goFront){
+        	t3dStep.set(new Vector3d(0.0, 0.0, speed));
+        	tg.getTransform(t3d);
+        	t3d.mul(t3dStep);
+        	tg.setTransform(t3d);          
+        } else if(this.goBack){
+        	t3dStep.set(new Vector3d(0.0, 0.0, -speed));
+        	tg.getTransform(t3d);
+        	t3d.mul(t3dStep);
+        	tg.setTransform(t3d);    
         }
-        if(goFront){
-            t3dAux.set(new Vector3d(0d,angleY,0d));
-            t3d.mul(t3dAux);
-            tg.setTransform(t3d);           
-        }
-        if(goBack){
-            t3dAux.set(new Vector3d(0d,angleY,0d));
-            t3d.mul(t3dAux);
-            tg.setTransform(t3d);    
-        }
-        tg.setTransform(t3d);
     }
-    
+
+	public void setTurnRight(boolean turnRight) {
+		this.turnRight = turnRight;
+	}
+
+	public void setTurnLeft(boolean turnLeft) {
+		this.turnLeft = turnLeft;
+	}
+
+	public void setGoFront(boolean goFront) {
+		this.goFront = goFront;
+	}
+
+	public void setGoBack(boolean goBack) {
+		this.goBack = goBack;
+	}
 }

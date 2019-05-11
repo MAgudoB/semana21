@@ -10,5 +10,5 @@ package Characters;
  * @author Miguel
  */
 public interface CharacterMovement {
-    void move(boolean turnLeft,boolean turnRight,boolean goFront,boolean goBack);
+    void move();
 }

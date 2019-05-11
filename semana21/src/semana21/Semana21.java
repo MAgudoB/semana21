@@ -78,7 +78,7 @@ public Semana21() {
 
     frame.pack();
 
-    frame.show();
+    frame.setVisible(true);
     
     timer.start();
 
@@ -247,7 +247,7 @@ public void mouseClicked(MouseEvent e)  {
     //Bucle
     @Override
     public void actionPerformed(ActionEvent ae) {
-        raptor.move(turnLeft,turnRight,goFront,goBack);
+        raptor.move();
     }
 
     @Override
@@ -258,36 +258,36 @@ public void mouseClicked(MouseEvent e)  {
     @Override
     public void keyPressed(KeyEvent ke) {
         if(ke.getKeyChar()=='a'){
-            turnLeft = true;
-            turnRight = false;
+        	raptor.setTurnLeft(true);
+        	raptor.setTurnRight(false);
         }
         if(ke.getKeyChar()=='w'){
-            goFront = true;
-            goBack = false;
+        	raptor.setGoFront(true);
+        	raptor.setGoBack(false);
         }
         if(ke.getKeyChar()=='s'){
-            goBack = true;
-            goFront = false;
+        	raptor.setGoFront(false);
+        	raptor.setGoBack(true);
         }
         if(ke.getKeyChar()=='d'){
-            turnRight = true;
-            turnLeft = false;
+        	raptor.setTurnLeft(false);
+        	raptor.setTurnRight(true);
         }
     }
 
     @Override
     public void keyReleased(KeyEvent ke) {
         if(ke.getKeyChar()=='a'){
-            turnLeft = false;
+        	raptor.setTurnLeft(false);
         }
         if(ke.getKeyChar()=='w'){
-            goFront = false;
+        	raptor.setGoFront(false);
         }
         if(ke.getKeyChar()=='s'){
-            goBack = true;
+        	raptor.setGoBack(false);
         }
         if(ke.getKeyChar()=='d'){
-            turnRight = false;
+        	raptor.setTurnRight(false);
         }
     }
 }
