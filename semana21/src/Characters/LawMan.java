@@ -18,19 +18,6 @@ public class LawMan extends BranchGroup implements CharacterMovement {
     private double speed = 0.1;
     private Matrix4d matrix = new Matrix4d();
 
-    //Get distance
-    private double getDistance(float x1, float y1,
-            float z1, float x2,
-            float y2, float z2) {
-
-        double d = Math.pow((Math.pow(x2 - x1, 2)
-                + Math.pow(y2 - y1, 2)
-                + Math.pow(z2 - z1, 2)
-                * 1.0), 0.5);
-        System.out.println("Distance is " + d);
-        return d;
-    }
-
     private void getRandomMove() {
         Random rnd = new Random();
         int num = rnd.nextInt(3 - 0 + 1) + 0;

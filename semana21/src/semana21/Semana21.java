@@ -26,6 +26,7 @@ public class Semana21 extends MouseAdapter implements ActionListener, KeyListene
     private TransformGroup viewingTransform;
     private ArrayList<LawMan> lawMans = new ArrayList<LawMan>();
     private SimpleUniverse universe;
+    private BranchGroup group;
 
     public Semana21() {
         Frame frame = new Frame("Jurasic World");
@@ -35,8 +36,7 @@ public class Semana21 extends MouseAdapter implements ActionListener, KeyListene
         Canvas3D canvas = new Canvas3D(config);
         canvas.setSize(800, 800);
         universe = new SimpleUniverse(canvas);
-
-        BranchGroup group = new BranchGroup();
+        group = new BranchGroup();
         raptor = createRaptor();
         group.addChild(raptor);
 
@@ -196,6 +196,11 @@ public class Semana21 extends MouseAdapter implements ActionListener, KeyListene
         moveCamera();
         for (LawMan lawMan : lawMans) {
             lawMan.move();
+            if (Functions.raptorCapturetLawMan(raptor, lawMan)) {
+                //TODO Remove players
+                //group.removeChild(group.indexOfChild(lawMan));
+                //lawMans.remove(lawMan);
+            }
         }
     }
 
