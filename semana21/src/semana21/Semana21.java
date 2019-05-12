@@ -15,6 +15,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.Timer;
+import static semana21.Functions.getVector;
 
 public class Semana21 extends MouseAdapter implements ActionListener, KeyListener {
 
@@ -173,11 +174,7 @@ public class Semana21 extends MouseAdapter implements ActionListener, KeyListene
         viewingTransformGroup = universe.getViewingPlatform().getViewPlatformTransform();
         Transform3D viewingTransform = new Transform3D();
 
-        TransformGroup tg = (TransformGroup) raptor.getChild(0);
-        Transform3D t3d = new Transform3D();
-        tg.getTransform(t3d);
-        Vector3d vector = new Vector3d();
-        t3d.get(vector);
+        Vector3d vector = getVector(raptor);
         Point3d point = new Point3d();
         point.x = vector.x;
         point.y = vector.y;
@@ -199,14 +196,12 @@ public class Semana21 extends MouseAdapter implements ActionListener, KeyListene
         for (LawMan lawMan : lawMans) {
             lawMan.move();
             if (Functions.raptorCapturetLawMan(raptor, lawMan)) {
-                //TODO Remove players
                 lawMan.detach();
-                //group.removeChild(group.indexOfChild(lawMan));
                 removeLawMan = true;
                 toBeRemoved = lawMan;
             }
         }
-        if(removeLawMan){
+        if (removeLawMan) {
             lawMans.remove(toBeRemoved);
         }
     }
