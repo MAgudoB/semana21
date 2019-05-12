@@ -21,7 +21,6 @@ public class Semana21 extends MouseAdapter implements ActionListener, KeyListene
     private int numLawMans = 3;
     private PickCanvas pickCanvas;
     private Timer timer;
-    private boolean turnRight, turnLeft, goFront, goBack;
     private Raptor raptor;
     private TransformGroup viewingTransform;
     private ArrayList<LawMan> lawMans = new ArrayList<LawMan>();
@@ -48,6 +47,8 @@ public class Semana21 extends MouseAdapter implements ActionListener, KeyListene
             group.addChild(newLawMan);
         }
 
+        
+        group.addChild(createScenary());
         universe.getViewingPlatform().setNominalViewingTransform();
         universe.addBranchGraph(group);
 
@@ -93,6 +94,39 @@ public class Semana21 extends MouseAdapter implements ActionListener, KeyListene
         }
     }
 
+    private BranchGroup createScenary () {
+    	BranchGroup objRoot = new BranchGroup();
+        TransformGroup tg = new TransformGroup();
+        Transform3D t3d = new Transform3D();
+        objRoot.setCapability(BranchGroup.ALLOW_DETACH);
+        tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+
+        t3d.setTranslation(new Vector3f(-0.3f, 0.0f, 0.0f));
+        t3d.setRotation(new AxisAngle4f(0.0f, 0.0f, 0.0f, 0.0f));
+        t3d.setScale(1.0);
+
+        tg.setTransform(t3d);
+
+        ObjectFile loader = new ObjectFile(ObjectFile.RESIZE);
+        Scene s = null;
+
+        File file = new java.io.File("src//semana21//roundabout.obj");
+
+        try {
+            s = loader.load(file.toURI().toURL());
+        } catch (Exception e) {
+            System.err.println(e);
+            System.exit(1);
+        }
+
+        tg.addChild(s.getSceneGroup());
+
+        objRoot.addChild(tg);
+        objRoot.addChild(createLight());
+        objRoot.compile();
+        return objRoot;
+    }
+    
     private Raptor createRaptor() {
 
         Raptor objRoot = new Raptor();
@@ -182,7 +216,7 @@ public class Semana21 extends MouseAdapter implements ActionListener, KeyListene
         point.x = vector.x;
         point.y = vector.y;
         point.z = vector.z;
-        viewingTransform.lookAt(new Point3d(point.x, point.y + 2, point.z - 3), point,
+        viewingTransform.lookAt(new Point3d(point.x, point.y + 1, point.z - 2), point,
                 new Vector3d(0, 1, 0));
 
         viewingTransform.invert();

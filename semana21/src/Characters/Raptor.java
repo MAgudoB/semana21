@@ -19,8 +19,8 @@ import javax.vecmath.Vector3d;
 public class Raptor extends BranchGroup implements CharacterMovement {
 
     private boolean turnRight, turnLeft, goFront, goBack;
-    private double angleY = Math.toRadians(15);
-    private double speed = 0.2;
+    private double angleY = Math.toRadians(10);
+    private double speed = 0.15;
     private Matrix4d matrix = new Matrix4d();
 
     public Raptor() {
