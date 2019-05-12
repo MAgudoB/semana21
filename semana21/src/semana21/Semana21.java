@@ -116,12 +116,12 @@ public class Semana21 extends MouseAdapter implements ActionListener, KeyListene
         texture.setBoundaryColor(new Color4f(0.0f, 1.0f, 0.0f, 0.0f));
         TextureAttributes texAttr = new TextureAttributes();
         texAttr.setTextureMode(TextureAttributes.MODULATE);
-        Appearance ap = new Appearance();
-        Material mm = new Material();
-        mm.setLightingEnable(true);
-        ap.setMaterial(mm);
-        ap.setTexture(texture);
-        ap.setTextureAttributes(texAttr);
+		Appearance ap = new Appearance();
+		Material mm = new Material();
+		mm.setLightingEnable(true);
+		ap.setMaterial(mm);
+		ap.setTexture(texture);
+		ap.setTextureAttributes(texAttr);
         Box cube = new Box(1000, 1, 1000, ap);
         transformGroup.addChild(cube);
         rootObj.addChild(transformGroup);
