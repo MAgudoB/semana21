@@ -5,6 +5,7 @@ import Characters.Raptor;
 import com.sun.j3d.utils.picking.*;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 import com.sun.j3d.utils.geometry.*;
+import com.sun.j3d.utils.image.TextureLoader;
 import com.sun.j3d.loaders.*;
 import com.sun.j3d.loaders.objectfile.ObjectFile;
 import javax.media.j3d.*;
@@ -27,6 +28,9 @@ public class Semana21 extends MouseAdapter implements ActionListener, KeyListene
     private ArrayList<LawMan> lawMans = new ArrayList<LawMan>();
     private SimpleUniverse universe;
     private BranchGroup group;
+    private Color3f red = new Color3f(0.15f, .7f, .15f);
+    private Color3f black = new Color3f(0.0f, 0.0f, 0.0f);
+    private Color3f white = new Color3f(1.0f, 1.0f, 1.0f);
 
     public Semana21() {
         Frame frame = new Frame("Jurasic World");
@@ -48,13 +52,13 @@ public class Semana21 extends MouseAdapter implements ActionListener, KeyListene
             group.addChild(newLawMan);
         }
 
-        
         group.addChild(createScenary());
+        
         universe.getViewingPlatform().setNominalViewingTransform();
         universe.addBranchGraph(group);
 
         frame.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent winEvent) {
+            public void windowClosing(WindowEvent winEventd) {
                 System.exit(0);
             }
         });
@@ -96,36 +100,35 @@ public class Semana21 extends MouseAdapter implements ActionListener, KeyListene
     }
 
     private BranchGroup createScenary () {
-    	BranchGroup objRoot = new BranchGroup();
-        TransformGroup tg = new TransformGroup();
-        Transform3D t3d = new Transform3D();
-        objRoot.setCapability(BranchGroup.ALLOW_DETACH);
-        tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+    	BranchGroup rootObj = new BranchGroup();
+    	Vector3f vector = new Vector3f(0.0f, -2f, 0.0f);
 
-        t3d.setTranslation(new Vector3f(-0.3f, 0.0f, 0.0f));
-        t3d.setRotation(new AxisAngle4f(0.0f, 0.0f, 0.0f, 0.0f));
-        t3d.setScale(1.0);
+        Transform3D transform = new Transform3D();
 
-        tg.setTransform(t3d);
+        transform.setTranslation(vector);
 
-        ObjectFile loader = new ObjectFile(ObjectFile.RESIZE);
-        Scene s = null;
+        TransformGroup transformGroup = new TransformGroup(transform);
 
-        File file = new java.io.File("src//semana21//roundabout.obj");
+        TextureLoader loader = new TextureLoader("src//semana21//grass.jpg", "RGB", new Container());
+        Texture texture = loader.getTexture();
+        texture.setBoundaryModeS(Texture.WRAP);
+        texture.setBoundaryModeT(Texture.WRAP);
+        texture.setBoundaryColor( new Color4f( 0.0f, 1.0f, 0.0f, 0.0f ) );
+        TextureAttributes texAttr = new TextureAttributes();
+        texAttr.setTextureMode(TextureAttributes.NICEST);
+		Appearance ap = new Appearance();
+		Material mm = new Material();
+		mm.setLightingEnable(true);
+		ap.setMaterial(mm);
+		ap.setTexture(texture);
+		ap.setTextureAttributes(texAttr);
+        Box cube = new Box(1000, 1, 1000, ap);
+        transformGroup.addChild(cube);
+        rootObj.addChild(transformGroup);
+        rootObj.addChild(createLight());
+        rootObj.compile();
 
-        try {
-            s = loader.load(file.toURI().toURL());
-        } catch (Exception e) {
-            System.err.println(e);
-            System.exit(1);
-        }
-
-        tg.addChild(s.getSceneGroup());
-
-        objRoot.addChild(tg);
-        objRoot.addChild(createLight());
-        objRoot.compile();
-        return objRoot;
+        return rootObj;
     }
     
     private Raptor createRaptor() {
