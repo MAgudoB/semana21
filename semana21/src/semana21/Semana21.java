@@ -37,6 +37,7 @@ public class Semana21 extends MouseAdapter implements ActionListener, KeyListene
         canvas.setSize(800, 800);
         universe = new SimpleUniverse(canvas);
         group = new BranchGroup();
+        group.setCapability(BranchGroup.ALLOW_CHILDREN_WRITE);
         raptor = createRaptor();
         group.addChild(raptor);
 
@@ -97,7 +98,7 @@ public class Semana21 extends MouseAdapter implements ActionListener, KeyListene
         Raptor objRoot = new Raptor();
         TransformGroup tg = new TransformGroup();
         Transform3D t3d = new Transform3D();
-
+        objRoot.setCapability(BranchGroup.ALLOW_DETACH);
         tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 
         t3d.setTranslation(new Vector3f(-0.3f, 0.0f, 0.0f));
@@ -130,9 +131,8 @@ public class Semana21 extends MouseAdapter implements ActionListener, KeyListene
         LawMan objRoot = new LawMan();
         TransformGroup tg = new TransformGroup();
         Transform3D t3d = new Transform3D();
-
+        objRoot.setCapability(BranchGroup.ALLOW_DETACH);
         tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-
         t3d.setTranslation(new Vector3f(x, 0.0f, z));
         t3d.setRotation(new AxisAngle4f(0.0f, 0.0f, 0.0f, 0.0f));
         t3d.setScale(1.0);
@@ -194,13 +194,20 @@ public class Semana21 extends MouseAdapter implements ActionListener, KeyListene
     public void actionPerformed(ActionEvent ae) {
         raptor.move();
         moveCamera();
+        boolean removeLawMan = false;
+        LawMan toBeRemoved = null;
         for (LawMan lawMan : lawMans) {
             lawMan.move();
             if (Functions.raptorCapturetLawMan(raptor, lawMan)) {
                 //TODO Remove players
+                lawMan.detach();
                 //group.removeChild(group.indexOfChild(lawMan));
-                //lawMans.remove(lawMan);
+                removeLawMan = true;
+                toBeRemoved = lawMan;
             }
+        }
+        if(removeLawMan){
+            lawMans.remove(toBeRemoved);
         }
     }
 
