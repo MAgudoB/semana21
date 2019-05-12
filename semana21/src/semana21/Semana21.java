@@ -53,7 +53,7 @@ public class Semana21 extends MouseAdapter implements ActionListener, KeyListene
         }
 
         group.addChild(createScenary());
-        
+
         universe.getViewingPlatform().setNominalViewingTransform();
         universe.addBranchGraph(group);
 
@@ -99,9 +99,9 @@ public class Semana21 extends MouseAdapter implements ActionListener, KeyListene
         }
     }
 
-    private BranchGroup createScenary () {
-    	BranchGroup rootObj = new BranchGroup();
-    	Vector3f vector = new Vector3f(0.0f, -2f, 0.0f);
+    private BranchGroup createScenary() {
+        BranchGroup rootObj = new BranchGroup();
+        Vector3f vector = new Vector3f(0.0f, -2f, 0.0f);
 
         Transform3D transform = new Transform3D();
 
@@ -113,15 +113,15 @@ public class Semana21 extends MouseAdapter implements ActionListener, KeyListene
         Texture texture = loader.getTexture();
         texture.setBoundaryModeS(Texture.WRAP);
         texture.setBoundaryModeT(Texture.WRAP);
-        texture.setBoundaryColor( new Color4f( 0.0f, 1.0f, 0.0f, 0.0f ) );
+        texture.setBoundaryColor(new Color4f(0.0f, 1.0f, 0.0f, 0.0f));
         TextureAttributes texAttr = new TextureAttributes();
-        texAttr.setTextureMode(TextureAttributes.NICEST);
-		Appearance ap = new Appearance();
-		Material mm = new Material();
-		mm.setLightingEnable(true);
-		ap.setMaterial(mm);
-		ap.setTexture(texture);
-		ap.setTextureAttributes(texAttr);
+        texAttr.setTextureMode(TextureAttributes.MODULATE);
+        Appearance ap = new Appearance();
+        Material mm = new Material();
+        mm.setLightingEnable(true);
+        ap.setMaterial(mm);
+        ap.setTexture(texture);
+        ap.setTextureAttributes(texAttr);
         Box cube = new Box(1000, 1, 1000, ap);
         transformGroup.addChild(cube);
         rootObj.addChild(transformGroup);
@@ -130,7 +130,7 @@ public class Semana21 extends MouseAdapter implements ActionListener, KeyListene
 
         return rootObj;
     }
-    
+
     private Raptor createRaptor() {
 
         Raptor objRoot = new Raptor();
